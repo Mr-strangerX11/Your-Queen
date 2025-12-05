@@ -1,6 +1,6 @@
 # Your Queen Backend API
 
-Express.js backend API for the Your Queen jewelry store.
+Express.js backend API for the Your Queen jewelry store using MongoDB.
 
 ## Setup
 
@@ -9,20 +9,30 @@ Express.js backend API for the Your Queen jewelry store.
    npm install
    ```
 
-2. Create a `.env` file based on `.env.example`:
+2. Create a `.env` file based `env.template`:
    ```bash
-   cp .env.example .env
+   cp env.template .env
    ```
 
-3. Update the `.env` file with your configuration:
-   - Database credentials
-   - JWT secret
-   - OAuth credentials
-   - Payment gateway keys
+3. Update the `.env` file with your MongoDB configuration:
+   - **For local MongoDB:**
+     ```
+     MONGODB_URI=mongodb://localhost:27017/your_queen_db
+     ```
+   - **For MongoDB Atlas (cloud):**
+     ```
+     MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/your_queen_db?retryWrites=true&w=majority
+     ```
+   - JWT secret key
+   - Other optional configurations (OAuth, payment gateways, etc.)
 
-4. Make sure PostgreSQL is running and create the database:
-   ```sql
-   CREATE DATABASE your_queen_db;
+4. Make sure MongoDB is running:
+   ```bash
+   # macOS
+   brew services start mongodb-community
+   
+   # Linux
+   sudo systemctl start mongod
    ```
 
 5. Start the development server:
@@ -30,7 +40,7 @@ Express.js backend API for the Your Queen jewelry store.
    npm run dev
    ```
 
-The server will start on `http://localhost:5000` and the database tables will be created automatically.
+The server will start on `http://localhost:5000` and MongoDB collections will be created automatically.
 
 ## API Documentation
 
@@ -38,13 +48,12 @@ See the main README.md for API endpoint documentation.
 
 ## Database Schema
 
-The application uses the following main tables:
+The application uses MongoDB with the following main collections:
 - `users` - User accounts
 - `products` - Product catalog
-- `cart` - Shopping cart items
-- `wishlist` - User wishlists
+- `carts` - Shopping cart items
+- `wishlists` - User wishlists
 - `orders` - Order records
-- `order_items` - Order line items
 - `addresses` - User shipping addresses
 - `reviews` - Product reviews
 

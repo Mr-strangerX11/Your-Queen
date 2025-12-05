@@ -1,265 +1,270 @@
-# Your Queen - Premium Online Jewelry Store
+# Your Queen - Jewelry Store Platform
 
-A sophisticated full-stack e-commerce application for a premium jewelry store offering high-quality earrings, necklaces, and jewelry sets for modern women.
+A full-stack jewelry e-commerce application built with **Express.js** backend and **React** frontend, featuring product management, shopping cart, user authentication, admin dashboard, and multiple payment gateway integrations.
 
-## Features
+## 🎯 Project Overview
 
-### Customer Features
-- **Product Showcase**: Browse products with high-resolution images, filters, and search
-- **Shopping Cart**: Add, update, and manage cart items
-- **Checkout**: Secure checkout with multiple payment options (Khalti, eSewa, Card)
-- **User Authentication**: Sign up/login with email, Google, or Facebook
-- **User Dashboard**: View orders, manage wishlist, and profile
-- **Wishlist**: Save favorite products for later
-- **Order Tracking**: Track order status and history
-- **Responsive Design**: Mobile-first, fully responsive design
+Your Queen is a comprehensive jewelry store platform that enables users to browse products, manage wishlists, add items to cart, place orders, and track their purchases. The platform also includes an admin dashboard for managing products and orders.
 
-### Admin Features
-- **Product Management**: Add, edit, and delete products
-- **Order Management**: View and update order statuses
-- **Dashboard Analytics**: View sales statistics and reports
-- **Inventory Management**: Track stock levels and low stock alerts
+### Key Features
 
-## Technology Stack
+- 🛍️ **Product Browsing** - Browse and filter jewelry products
+- 🛒 **Shopping Cart** - Add/remove items and manage quantities
+- 💌 **Wishlist** - Save favorite items for later
+- 👤 **User Authentication** - Secure login and registration
+- 📦 **Order Management** - Place orders and track status
+- ⭐ **Reviews & Ratings** - Leave product reviews
+- 🔐 **Admin Panel** - Manage products, orders, and users
+- 💳 **Multiple Payment Methods** - Khalti, eSewa, Stripe integration
+- 📱 **Responsive Design** - Works on desktop and mobile devices
+- 🎨 **Modern UI** - Built with React and TailwindCSS
 
-### Frontend
-- **React 18** - UI library
-- **TailwindCSS** - Utility-first CSS framework
-- **Framer Motion** - Animation library
-- **React Router** - Routing
-- **Axios** - HTTP client
-- **React Hot Toast** - Notifications
+## 📋 Prerequisites
 
-### Backend
-- **Node.js** - Runtime environment
-- **Express.js** - Web framework
-- **PostgreSQL** - Database
-- **JWT** - Authentication
-- **bcryptjs** - Password hashing
-- **Passport** - OAuth authentication
+Before getting started, ensure you have the following installed:
 
-## Installation
+- **Node.js** (v16 or higher) - [Download](https://nodejs.org/)
+- **MongoDB** (v4.4 or higher) - [Download](https://www.mongodb.com/try/download/community) or use [MongoDB Atlas](https://www.mongodb.com/cloud/atlas)
+- **npm** or **yarn** (comes with Node.js)
 
-### Prerequisites
-- Node.js (v16 or higher)
-- PostgreSQL (v12 or higher)
-- npm or yarn
+## 🚀 Quick Start
 
-### Setup Instructions
+### Step 1: Clone the Repository
 
-1. **Clone the repository**
-   ```bash
-   git clone <repository-url>
-   cd online
-   ```
-
-2. **Install dependencies**
-   ```bash
-   npm run install-all
-   ```
-
-3. **Set up the database**
-   - Create a PostgreSQL database named `your_queen_db`
-   - Update database credentials in `backend/.env`
-
-4. **Configure environment variables**
-   - Copy `backend/.env.example` to `backend/.env`
-   - Fill in all required environment variables:
-     - Database credentials
-     - JWT secret
-     - OAuth credentials (Google, Facebook)
-     - Payment gateway keys (Khalti, eSewa, Stripe)
-     - Email and SMS configuration
-
-5. **Initialize the database**
-   - The database tables will be created automatically when you start the server
-   - Or run the initialization script manually
-
-6. **Start the development servers**
-   ```bash
-   npm run dev
-   ```
-   This will start both the backend (port 5000) and frontend (port 3000) servers.
-
-   Or start them separately:
-   ```bash
-   # Backend
-   cd backend
-   npm run dev
-
-   # Frontend (in a new terminal)
-   cd frontend
-   npm start
-   ```
-
-## Project Structure
-
-```
-online/
-├── backend/
-│   ├── config/
-│   │   └── database.js          # Database configuration
-│   ├── middleware/
-│   │   └── auth.js               # Authentication middleware
-│   ├── routes/
-│   │   ├── auth.js               # Authentication routes
-│   │   ├── products.js           # Product routes
-│   │   ├── cart.js               # Cart routes
-│   │   ├── orders.js             # Order routes
-│   │   ├── users.js              # User routes
-│   │   ├── wishlist.js           # Wishlist routes
-│   │   ├── admin.js              # Admin routes
-│   │   └── payments.js           # Payment routes
-│   └── server.js                 # Express server
-├── frontend/
-│   ├── public/
-│   ├── src/
-│   │   ├── components/
-│   │   │   └── layout/
-│   │   │       ├── Navbar.js
-│   │   │       └── Footer.js
-│   │   ├── pages/
-│   │   │   ├── Home.js
-│   │   │   ├── Products.js
-│   │   │   ├── ProductDetail.js
-│   │   │   ├── Cart.js
-│   │   │   ├── Checkout.js
-│   │   │   ├── Login.js
-│   │   │   ├── Register.js
-│   │   │   ├── Dashboard.js
-│   │   │   ├── Orders.js
-│   │   │   ├── Wishlist.js
-│   │   │   ├── Profile.js
-│   │   │   └── admin/
-│   │   │       ├── AdminDashboard.js
-│   │   │       ├── AdminProducts.js
-│   │   │       └── AdminOrders.js
-│   │   ├── context/
-│   │   │   └── AuthContext.js    # Authentication context
-│   │   ├── utils/
-│   │   │   └── api.js             # API utility
-│   │   ├── App.js
-│   │   └── index.js
-│   └── package.json
-└── README.md
+```bash
+git clone <repository-url>
+cd Your-Queen
 ```
 
-## API Endpoints
+### Step 2: Database Setup
 
-### Authentication
-- `POST /api/auth/register` - Register new user
-- `POST /api/auth/login` - Login user
-- `GET /api/auth/me` - Get current user
-- `POST /api/auth/social-login` - Social login (Google/Facebook)
+**Option 1: Local MongoDB**
+1. Install MongoDB and start the service
+2. MongoDB will create the database automatically when the app connects
 
-### Products
-- `GET /api/products` - Get all products (with filters)
-- `GET /api/products/:id` - Get single product
-- `GET /api/products/categories/list` - Get all categories
-- `GET /api/products/filters/options` - Get filter options
+**Option 2: MongoDB Atlas (Cloud)**
+1. Create an account on [MongoDB Atlas](https://www.mongodb.com/cloud/atlas)
+2. Create a cluster and get your connection string
+3. Use the connection string in your `.env` file
 
-### Cart
-- `GET /api/cart` - Get user's cart
-- `POST /api/cart` - Add item to cart
-- `PUT /api/cart/:id` - Update cart item
-- `DELETE /api/cart/:id` - Remove item from cart
+### Step 3: Backend Setup
 
-### Orders
-- `GET /api/orders` - Get user's orders
-- `GET /api/orders/:id` - Get single order
-- `POST /api/orders` - Create new order
-- `PUT /api/orders/:id/status` - Update order status
+Navigate to the backend directory and set up:
 
-### Wishlist
-- `GET /api/wishlist` - Get user's wishlist
-- `POST /api/wishlist` - Add to wishlist
-- `DELETE /api/wishlist/:id` - Remove from wishlist
+```bash
+cd backend
+npm install
+```
 
-### Admin
-- `GET /api/admin/stats` - Get dashboard statistics
-- `GET /api/admin/products` - Get all products (admin)
-- `POST /api/admin/products` - Create product
-- `PUT /api/admin/products/:id` - Update product
-- `DELETE /api/admin/products/:id` - Delete product
-- `GET /api/admin/orders` - Get all orders
-- `PUT /api/admin/orders/:id/status` - Update order status
-
-## Payment Integration
-
-The application supports multiple payment gateways:
-- **Khalti** - Popular payment gateway in Nepal
-- **eSewa** - Digital wallet in Nepal
-- **Card Payments** - Stripe integration for card payments
-
-Note: Payment integrations are set up with mock implementations. In production, you'll need to:
-1. Obtain API keys from respective payment providers
-2. Update the payment routes with actual SDK implementations
-3. Configure webhooks for payment verification
-
-## Environment Variables
-
-Create a `.env` file in the `backend` directory with the following variables:
+Create a `.env` file based on `env.template` and configure your environment variables:
 
 ```env
 PORT=5000
 NODE_ENV=development
-
-# Database
-DB_HOST=localhost
-DB_PORT=5432
-DB_NAME=your_queen_db
-DB_USER=postgres
-DB_PASSWORD=your_password
-
-# JWT
-JWT_SECRET=your_super_secret_jwt_key
+MONGODB_URI=mongodb://localhost:27017/your_queen_db
+JWT_SECRET=your_secret_key_change_in_production
 JWT_EXPIRE=7d
-
-# OAuth
-GOOGLE_CLIENT_ID=your_google_client_id
-GOOGLE_CLIENT_SECRET=your_google_client_secret
-FACEBOOK_APP_ID=your_facebook_app_id
-FACEBOOK_APP_SECRET=your_facebook_app_secret
-
-# Payments
-KHALTI_SECRET_KEY=your_khalti_secret_key
-ESEWA_MERCHANT_ID=your_esewa_merchant_id
-STRIPE_SECRET_KEY=your_stripe_secret_key
-
-# Frontend URL
 FRONTEND_URL=http://localhost:3000
 ```
 
-## Future Enhancements
+For MongoDB Atlas, use:
+```env
+MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/your_queen_db?retryWrites=true&w=majority
+```
 
-- [ ] Mobile app using React Native/Expo
-- [ ] AI-powered product recommendations
-- [ ] Live chat support
-- [ ] Email and SMS notifications
-- [ ] Advanced analytics and reporting
-- [ ] Multi-language support
-- [ ] Seasonal theme customization
-- [ ] Product reviews and ratings
-- [ ] Social media integration
-- [ ] SEO optimization
+Start the backend server:
 
-## Contributing
+```bash
+npm run dev
+```
+
+The API will be available at `http://localhost:5000/api`
+
+### Step 4: Frontend Setup
+
+Open a new terminal and navigate to the frontend directory:
+
+```bash
+cd frontend
+npm install
+```
+
+Create a `.env` file (optional):
+
+```env
+REACT_APP_API_URL=http://localhost:5000/api
+```
+
+Start the development server:
+
+```bash
+npm start
+```
+
+The application will be available at `http://localhost:3000`
+
+## 📁 Project Structure
+
+```
+Your-Queen/
+├── backend/                    # Express.js API server
+│   ├── config/                # Database and configuration
+│   ├── middleware/            # Authentication and middleware
+│   ├── models/                # Database models (User, Product, Order, etc.)
+│   ├── routes/                # API routes
+│   ├── server.js              # Entry point
+│   ├── package.json
+│   └── env.template           # Environment template
+│
+├── frontend/                   # React application
+│   ├── public/                # Static files
+│   ├── src/
+│   │   ├── components/        # Reusable components (Navbar, Footer)
+│   │   ├── pages/             # Page components
+│   │   ├── context/           # React context (Authentication)
+│   │   ├── utils/             # Utility functions (API calls)
+│   │   ├── App.js             # Main App component
+│   │   └── index.js           # Entry point
+│   ├── package.json
+│   ├── tailwind.config.js     # TailwindCSS configuration
+│   └── postcss.config.js      # PostCSS configuration
+│
+├── SETUP.md                   # Detailed setup guide
+├── package.json               # Root package configuration
+└── README.md                  # This file
+```
+
+## 🗄️ Database Schema
+
+The application uses MongoDB with the following main collections:
+
+- **users** - User accounts and authentication
+- **products** - Product catalog
+- **carts** - Shopping cart items
+- **wishlists** - User wishlists
+- **orders** - Order records with embedded order items
+- **addresses** - User shipping addresses
+- **reviews** - Product reviews and ratings
+
+## 🛣️ API Endpoints
+
+### Authentication
+- `POST /api/auth/register` - Register new user
+- `POST /api/auth/login` - Login user
+- `POST /api/auth/logout` - Logout user
+
+### Products
+- `GET /api/products` - Get all products
+- `GET /api/products/:id` - Get product details
+- `GET /api/products/reviews` - Get product reviews
+
+### Cart
+- `GET /api/cart` - Get user cart
+- `POST /api/cart/add` - Add item to cart
+- `PUT /api/cart/update` - Update cart item
+- `DELETE /api/cart/remove` - Remove item from cart
+
+### Wishlist
+- `GET /api/wishlist` - Get user wishlist
+- `POST /api/wishlist/add` - Add item to wishlist
+- `DELETE /api/wishlist/remove` - Remove item from wishlist
+
+### Orders
+- `GET /api/orders` - Get user orders
+- `POST /api/orders` - Create new order
+- `GET /api/orders/:id` - Get order details
+
+### Admin
+- `GET /api/admin/products` - Manage products
+- `GET /api/admin/orders` - Manage orders
+- `GET /api/admin/users` - Manage users
+
+## 🔧 Configuration
+
+### Backend Configuration
+
+All backend configuration is managed through environment variables in the `.env` file. See `env.template` for available options.
+
+**Key Variables:**
+- `PORT` - Server port (default: 5000)
+- `MONGODB_URI` - MongoDB connection string (local or cloud)
+- `JWT_SECRET` - Secret key for JWT tokens
+- `JWT_EXPIRE` - JWT expiration time
+- `FRONTEND_URL` - Frontend URL for CORS
+- `KHALTI_SECRET_KEY` - Khalti payment gateway key
+- `ESEWA_*` - eSewa payment gateway credentials
+- `STRIPE_SECRET_KEY` - Stripe payment gateway key
+
+### Frontend Configuration
+
+Frontend uses environment variables for API configuration. Create a `.env` file in the `frontend` directory:
+
+```env
+REACT_APP_API_URL=http://localhost:5000/api
+```
+
+## 🔐 Security Features
+
+- JWT-based authentication
+- Password hashing with bcrypt
+- Protected routes and API endpoints
+- CORS configuration
+- Input validation and sanitization
+- Secure payment gateway integrations
+
+## 🛠️ Development
+
+### Backend Development
+
+```bash
+cd backend
+npm run dev    # Start development server with auto-reload
+npm run build  # Build for production
+npm start      # Start production server
+```
+
+### Frontend Development
+
+```bash
+cd frontend
+npm start      # Start development server
+npm run build  # Build for production
+npm test       # Run tests
+```
+
+## 🚢 Deployment
+
+Detailed deployment instructions are coming soon. For now, ensure:
+
+1. All environment variables are properly configured
+2. Database is set up on your hosting provider
+3. Backend and frontend are deployed to appropriate services
+4. CORS is configured correctly
+
+## 📝 License
+
+This project is licensed under the MIT License.
+
+## 👥 Contributing
+
+Contributions are welcome! Please follow these steps:
 
 1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
 5. Open a Pull Request
 
-## License
+## 📧 Support
 
-This project is licensed under the ISC License.
+For support or questions, please open an issue on GitHub or contact the development team.
 
-## Support
+## 🔗 Related Documentation
 
-For support, email support@yourqueen.com or create an issue in the repository.
+- [Detailed Setup Guide](./SETUP.md)
+- [Backend README](./backend/README.md)
+- [Frontend README](./frontend/README.md)
 
 ---
 
-Built with ❤️ for modern women who love elegant jewelry.
-
+**Happy coding! 🎉**

@@ -14,7 +14,11 @@ React frontend application for the Your Queen jewelry store.
    REACT_APP_API_URL=http://localhost:5000/api
    ```
 
-3. Start the development server:
+3. Make sure the backend server is running on `http://localhost:5000`
+   - The backend uses MongoDB for the database
+   - See [Backend README](../backend/README.md) for backend setup instructions
+
+4. Start the development server:
    ```bash
    npm start
    ```

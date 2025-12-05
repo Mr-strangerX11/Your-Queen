@@ -15,8 +15,6 @@ const generateToken = (id) => {
 };
 
 // @route   POST /api/auth/register
-// @desc    Register a new user
-// @access  Public
 router.post('/register', [
   body('email').isEmail().normalizeEmail(),
   body('password').isLength({ min: 6 }),
@@ -31,13 +29,11 @@ router.post('/register', [
 
     const { email, password, first_name, last_name, phone } = req.body;
 
-    // Check if user exists
     const existingUser = await User.findOne({ email });
     if (existingUser) {
       return res.status(400).json({ message: 'User already exists' });
     }
 
-    // Create user (password will be hashed by pre-save hook)
     const user = await User.create({
       email,
       password,
@@ -57,14 +53,12 @@ router.post('/register', [
       },
     });
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: 'Server error' });
+    console.error('Register error:', error);
+    res.status(500).json({ message: 'Server error', error: error.message });
   }
 });
 
 // @route   POST /api/auth/login
-// @desc    Login user
-// @access  Public
 router.post('/login', [
   body('email').isEmail().normalizeEmail(),
   body('password').notEmpty(),
@@ -77,23 +71,17 @@ router.post('/login', [
 
     const { email, password } = req.body;
 
-    // Check if user exists
     const user = await User.findOne({ email });
     if (!user) {
       return res.status(401).json({ message: 'Invalid credentials' });
     }
 
-    // Check password
-    if (user.password) {
-      const isMatch = await bcrypt.compare(password, user.password);
-      if (!isMatch) {
-        return res.status(401).json({ message: 'Invalid credentials' });
-      }
-    } else {
-      return res.status(401).json({ message: 'Please use social login for this account' });
+    const isPasswordCorrect = await bcrypt.compare(password, user.password);
+    if (!isPasswordCorrect) {
+      return res.status(401).json({ message: 'Invalid credentials' });
     }
 
-    res.json({
+    res.status(200).json({
       token: generateToken(user._id),
       user: {
         id: user._id,
@@ -101,69 +89,43 @@ router.post('/login', [
         first_name: user.first_name,
         last_name: user.last_name,
         role: user.role,
-        loyalty_points: user.loyalty_points,
       },
     });
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: 'Server error' });
+    console.error('Login error:', error);
+    res.status(500).json({ message: 'Server error', error: error.message });
   }
 });
 
 // @route   GET /api/auth/me
-// @desc    Get current user
-// @access  Private
 router.get('/me', protect, async (req, res) => {
   try {
     const user = await User.findById(req.user.id).select('-password');
-
-    res.json({ user });
+    res.status(200).json({ user });
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: 'Server error' });
+    console.error('Get me error:', error);
+    res.status(500).json({ message: 'Server error', error: error.message });
   }
 });
 
 // @route   POST /api/auth/social-login
-// @desc    Social login (Google/Facebook)
-// @access  Public
 router.post('/social-login', async (req, res) => {
   try {
-    const { provider, providerId, email, first_name, last_name, avatar_url } = req.body;
+    const { email, first_name, last_name, socialId, provider } = req.body;
 
-    let user;
-    const query = provider === 'google' 
-      ? { $or: [{ google_id: providerId }, { email }] }
-      : { $or: [{ facebook_id: providerId }, { email }] };
-
-    user = await User.findOne(query);
-
-    if (user) {
-      // Update provider ID if not set
-      if (provider === 'google' && !user.google_id) {
-        user.google_id = providerId;
-        await user.save();
-      } else if (provider === 'facebook' && !user.facebook_id) {
-        user.facebook_id = providerId;
-        await user.save();
-      }
-    } else {
-      // Create new user
-      const userData = {
+    let user = await User.findOne({ email });
+    if (!user) {
+      user = await User.create({
         email,
         first_name,
         last_name,
-        avatar_url: avatar_url || null,
-      };
-      if (provider === 'google') {
-        userData.google_id = providerId;
-      } else {
-        userData.facebook_id = providerId;
-      }
-      user = await User.create(userData);
+        socialId,
+        provider,
+        password: Math.random().toString(36).slice(-8),
+      });
     }
 
-    res.json({
+    res.status(200).json({
       token: generateToken(user._id),
       user: {
         id: user._id,
@@ -171,12 +133,11 @@ router.post('/social-login', async (req, res) => {
         first_name: user.first_name,
         last_name: user.last_name,
         role: user.role,
-        loyalty_points: user.loyalty_points,
       },
     });
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: 'Server error' });
+    console.error('Social login error:', error);
+    res.status(500).json({ message: 'Server error', error: error.message });
   }
 });
 

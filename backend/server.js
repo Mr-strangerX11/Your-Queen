@@ -51,6 +51,14 @@ app.get('/api/health', (req, res) => {
   res.json({ status: 'OK', message: 'Your Queen API is running' });
 });
 
+// 404 handler for undefined routes
+app.use((req, res) => {
+  res.status(404).json({
+    message: 'Route not found',
+    path: req.path
+  });
+});
+
 // Error handling middleware
 app.use((err, req, res, next) => {
   console.error(err.stack);
@@ -67,23 +75,23 @@ const MAX_PORT_ATTEMPTS = 5;
 
 function startServer(port, attempt = 0) {
   const server = app.listen(port, () => {
-    console.log(`Server running on port ${port}`);
+    console.log(`✓ Server running on port ${port}`);
+    console.log(`✓ API Health Check: http://localhost:${port}/api/health`);
   });
 
   server.on('error', (err) => {
     if (err.code === 'EADDRINUSE') {
-      console.warn(`Port ${port} in use.`);
+      console.warn(`⚠ Port ${port} in use.`);
       if (attempt < MAX_PORT_ATTEMPTS) {
         const nextPort = port + 1;
-        console.log(`Attempting to listen on port ${nextPort} (attempt ${attempt + 1})`);
-        // small delay before retrying
+        console.log(`↻ Attempting to listen on port ${nextPort} (attempt ${attempt + 1}/${MAX_PORT_ATTEMPTS})`);
         setTimeout(() => startServer(nextPort, attempt + 1), 500);
       } else {
-        console.error(`Failed to bind server after ${MAX_PORT_ATTEMPTS} attempts. Exiting.`);
+        console.error(`✗ Failed to bind server after ${MAX_PORT_ATTEMPTS} attempts. Exiting.`);
         process.exit(1);
       }
     } else {
-      console.error('Server error:', err);
+      console.error('✗ Server error:', err);
       process.exit(1);
     }
   });
@@ -91,12 +99,11 @@ function startServer(port, attempt = 0) {
 
 // Global error handlers to avoid unhandled crashes
 process.on('unhandledRejection', (reason, promise) => {
-  console.error('Unhandled Rejection at:', promise, 'reason:', reason);
+  console.error('✗ Unhandled Rejection at:', promise, 'reason:', reason);
 });
 
 process.on('uncaughtException', (err) => {
-  console.error('Uncaught Exception thrown:', err);
-  // Optionally exit or attempt a graceful shutdown
+  console.error('✗ Uncaught Exception thrown:', err);
   process.exit(1);
 });
 

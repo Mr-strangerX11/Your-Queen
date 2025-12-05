@@ -8,18 +8,33 @@ Follow these steps to get the application running on your local machine.
 
 Make sure you have the following installed:
 - **Node.js** (v16 or higher) - [Download](https://nodejs.org/)
-- **PostgreSQL** (v12 or higher) - [Download](https://www.postgresql.org/download/)
+- **MongoDB** (v4.4 or higher) - [Download](https://www.mongodb.com/try/download/community)
+  - Or use **MongoDB Atlas** for cloud hosting - [Sign up](https://www.mongodb.com/cloud/atlas)
 - **npm** (comes with Node.js) or **yarn**
 
 ### Step 2: Database Setup
 
-1. Start PostgreSQL service
-2. Open PostgreSQL command line or pgAdmin
-3. Create a new database:
-   ```sql
-   CREATE DATABASE your_queen_db;
+**For Local MongoDB:**
+1. Install MongoDB from [here](https://www.mongodb.com/try/download/community)
+2. Start MongoDB service:
+   ```bash
+   # macOS (with Homebrew)
+   brew services start mongodb-community
+   
+   # Linux
+   sudo systemctl start mongod
+   
+   # Windows
+   # Use MongoDB Compass or start the service from Services
    ```
-4. Note down your database credentials (host, port, username, password)
+3. MongoDB will create the database automatically
+
+**For MongoDB Atlas (Cloud):**
+1. Create an account at [MongoDB Atlas](https://www.mongodb.com/cloud/atlas)
+2. Create a new cluster
+3. Create a database user with a password
+4. Get your connection string (looks like: `mongodb+srv://username:password@cluster.mongodb.net/your_queen_db`)
+5. Save this string for the backend configuration
 
 ### Step 3: Backend Setup
 
@@ -42,15 +57,13 @@ Make sure you have the following installed:
    PORT=5000
    NODE_ENV=development
 
-   # Database Configuration
-   DB_HOST=localhost
-   DB_PORT=5432
-   DB_NAME=your_queen_db
-   DB_USER=postgres
-   DB_PASSWORD=your_postgres_password
+   # MongoDB Configuration
+   MONGODB_URI=mongodb://localhost:27017/your_queen_db
+   # For MongoDB Atlas, use:
+   # MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/your_queen_db?retryWrites=true&w=majority
 
    # JWT Secret (generate a random string)
-   JWT_SECRET=your_super_secret_jwt_key_change_in_production
+   JWT_SECRET=your_super_secret_jwt_key_change_in_production_12345
    JWT_EXPIRE=7d
 
    # OAuth Configuration (Optional for now)
@@ -116,18 +129,35 @@ Make sure you have the following installed:
 
 ### Step 5: Create Admin User
 
-To create an admin user, you can either:
+To create an admin user, you can use the registration endpoint and then update the role in the database:
 
-**Option 1: Using PostgreSQL directly**
-```sql
-INSERT INTO users (email, password, first_name, last_name, role)
-VALUES (
-  'admin@yourqueen.com',
-  '$2a$10$YourHashedPasswordHere',  -- Use bcrypt to hash your password
-  'Admin',
-  'User',
-  'admin'
-);
+**Option 1: Using MongoDB directly**
+```bash
+mongosh  # or mongo for older versions
+
+# Connect to your database
+use your_queen_db
+
+# Create an admin user (password should be bcrypt hashed)
+db.users.insertOne({
+  email: 'admin@yourqueen.com',
+  password: '$2a$10$YourHashedPasswordHere',  // Use bcrypt to hash your password
+  first_name: 'Admin',
+  last_name: 'User',
+  role: 'admin',
+  createdAt: new Date(),
+  updatedAt: new Date()
+})
+```
+
+**Option 2: Register normally and update via backend**
+1. Register a user through the frontend or API
+2. Update the user role to admin using MongoDB:
+```bash
+db.users.updateOne(
+  { email: 'admin@yourqueen.com' },
+  { $set: { role: 'admin' } }
+)
 ```
 
 **Option 2: Using the API**
@@ -147,9 +177,10 @@ UPDATE users SET role = 'admin' WHERE email = 'your_email@example.com';
 ## Troubleshooting
 
 ### Database Connection Issues
-- Verify PostgreSQL is running
-- Check database credentials in `.env`
-- Ensure the database exists
+- Verify MongoDB is running (`mongo` or `mongosh` should connect)
+- Check `MONGODB_URI` in `.env`
+- For MongoDB Atlas, verify your connection string and network access settings
+- Ensure your MongoDB user has proper permissions
 
 ### Port Already in Use
 - Backend: Change `PORT` in `backend/.env`
@@ -162,6 +193,11 @@ UPDATE users SET role = 'admin' WHERE email = 'your_email@example.com';
 ### CORS Errors
 - Ensure `FRONTEND_URL` in `backend/.env` matches your frontend URL
 - Check that both servers are running
+
+### MongoDB Connection Timeout
+- Check that MongoDB service is running
+- Verify firewall settings (for MongoDB Atlas)
+- Ensure network access is allowed from your IP address (for MongoDB Atlas)
 
 ## Next Steps
 
