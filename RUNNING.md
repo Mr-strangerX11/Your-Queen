@@ -54,7 +54,7 @@ cd frontend && npm install     # Frontend dependencies
 The backend `.env` file has been created at `backend/.env` with default values. 
 
 **Important:** For production use, update the following values:
-- `JWT_SECRET` - Use a strong, unique secret key
+- `JWT_SECRET` - **CRITICAL:** The current default value is for development only and is exposed in version control. Generate a new, strong, unique secret key for production using a secure random generator (e.g., `openssl rand -base64 32`)
 - OAuth credentials (Google, Facebook) - If you want social login
 - Payment gateway keys (Khalti, eSewa, Stripe) - For payment processing
 - Email configuration - For sending emails
