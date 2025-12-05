@@ -46,6 +46,20 @@ A sophisticated full-stack e-commerce application for a premium jewelry store of
 
 ## Installation
 
+For detailed setup instructions, see [SETUP.md](SETUP.md) or follow the [Quick Start Guide](QUICKSTART.md).
+
+### Quick Start with Docker 🐳
+
+```bash
+git clone https://github.com/Mr-strangerX11/Your-Queen.git
+cd Your-Queen
+docker-compose up -d
+```
+
+Access at http://localhost:3000
+
+### Manual Installation
+
 ### Prerequisites
 - Node.js (v16 or higher)
 - MongoDB (v4.4 or higher)
@@ -101,30 +115,33 @@ A sophisticated full-stack e-commerce application for a premium jewelry store of
 ## Project Structure
 
 ```
-online/
-├── backend/
+Your-Queen/
+├── backend/                    # Node.js/Express backend
 │   ├── config/
-│   │   └── database.js          # Database configuration
+│   │   └── database.js        # MongoDB configuration
 │   ├── middleware/
-│   │   └── auth.js               # Authentication middleware
-│   ├── routes/
-│   │   ├── auth.js               # Authentication routes
-│   │   ├── products.js           # Product routes
-│   │   ├── cart.js               # Cart routes
-│   │   ├── orders.js             # Order routes
-│   │   ├── users.js              # User routes
-│   │   ├── wishlist.js           # Wishlist routes
-│   │   ├── admin.js              # Admin routes
-│   │   └── payments.js           # Payment routes
-│   └── server.js                 # Express server
-├── frontend/
+│   │   └── auth.js            # Authentication middleware
+│   ├── models/                # Mongoose models
+│   ├── routes/                # API routes
+│   │   ├── auth.js
+│   │   ├── products.js
+│   │   ├── cart.js
+│   │   ├── orders.js
+│   │   ├── users.js
+│   │   ├── wishlist.js
+│   │   ├── admin.js
+│   │   └── payments.js
+│   ├── uploads/               # User uploaded files
+│   ├── env.template           # Environment variables template
+│   └── server.js              # Express server entry point
+├── frontend/                  # React frontend
 │   ├── public/
 │   ├── src/
-│   │   ├── components/
+│   │   ├── components/        # Reusable components
 │   │   │   └── layout/
 │   │   │       ├── Navbar.js
 │   │   │       └── Footer.js
-│   │   ├── pages/
+│   │   ├── pages/             # Page components
 │   │   │   ├── Home.js
 │   │   │   ├── Products.js
 │   │   │   ├── ProductDetail.js
@@ -141,12 +158,22 @@ online/
 │   │   │       ├── AdminProducts.js
 │   │   │       └── AdminOrders.js
 │   │   ├── context/
-│   │   │   └── AuthContext.js    # Authentication context
+│   │   │   └── AuthContext.js # Authentication context
 │   │   ├── utils/
-│   │   │   └── api.js             # API utility
+│   │   │   └── api.js         # API utility
 │   │   ├── App.js
 │   │   └── index.js
 │   └── package.json
+├── .github/
+│   └── workflows/             # GitHub Actions
+│       └── release.yml        # Automated releases
+├── Dockerfile                 # Production Docker image
+├── docker-compose.yml         # Development setup
+├── docker-compose.prod.yml    # Production setup
+├── DEPLOYMENT.md              # Deployment guide
+├── CONTRIBUTING.md            # Contribution guidelines
+├── QUICKSTART.md              # Quick start guide
+├── LICENSE                    # MIT License
 └── README.md
 ```
 
@@ -189,6 +216,16 @@ online/
 - `DELETE /api/admin/products/:id` - Delete product
 - `GET /api/admin/orders` - Get all orders
 - `PUT /api/admin/orders/:id/status` - Update order status
+
+## 📚 Documentation
+
+- **[Quick Start Guide](QUICKSTART.md)** - Get started in 5 minutes
+- **[Setup Guide](SETUP.md)** - Detailed setup instructions
+- **[Deployment Guide](DEPLOYMENT.md)** - Deploy to various platforms
+- **[Contributing Guide](CONTRIBUTING.md)** - How to contribute
+- **[Publishing Checklist](PUBLISHING_CHECKLIST.md)** - Pre-deployment checklist
+- **[NPM Publishing](NPM_PUBLISHING.md)** - Publishing components to NPM
+- **[Changelog](CHANGELOG.md)** - Version history
 
 ## Payment Integration
 
