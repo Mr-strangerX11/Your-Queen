@@ -8,18 +8,17 @@ Follow these steps to get the application running on your local machine.
 
 Make sure you have the following installed:
 - **Node.js** (v16 or higher) - [Download](https://nodejs.org/)
-- **PostgreSQL** (v12 or higher) - [Download](https://www.postgresql.org/download/)
+- **MongoDB** (v4.4 or higher) - [Download](https://www.mongodb.com/try/download/community)
 - **npm** (comes with Node.js) or **yarn**
 
 ### Step 2: Database Setup
 
-1. Start PostgreSQL service
-2. Open PostgreSQL command line or pgAdmin
-3. Create a new database:
-   ```sql
-   CREATE DATABASE your_queen_db;
-   ```
-4. Note down your database credentials (host, port, username, password)
+1. Start MongoDB service
+   - On macOS: `brew services start mongodb-community`
+   - On Linux: `sudo systemctl start mongod`
+   - On Windows: Start MongoDB service from Services app or run `mongod`
+2. MongoDB will create the database automatically when the application starts
+3. Default connection: `mongodb://localhost:27017/your_queen_db`
 
 ### Step 3: Backend Setup
 
@@ -43,11 +42,7 @@ Make sure you have the following installed:
    NODE_ENV=development
 
    # Database Configuration
-   DB_HOST=localhost
-   DB_PORT=5432
-   DB_NAME=your_queen_db
-   DB_USER=postgres
-   DB_PASSWORD=your_postgres_password
+   MONGODB_URI=mongodb://localhost:27017/your_queen_db
 
    # JWT Secret (generate a random string)
    JWT_SECRET=your_super_secret_jwt_key_change_in_production
@@ -86,7 +81,7 @@ Make sure you have the following installed:
    ```
 
    The server should start on `http://localhost:5000`
-   The database tables will be created automatically on first run.
+   MongoDB collections will be created automatically on first use.
 
 ### Step 4: Frontend Setup
 
@@ -116,25 +111,30 @@ Make sure you have the following installed:
 
 ### Step 5: Create Admin User
 
-To create an admin user, you can either:
+To create an admin user:
 
-**Option 1: Using PostgreSQL directly**
-```sql
-INSERT INTO users (email, password, first_name, last_name, role)
-VALUES (
-  'admin@yourqueen.com',
-  '$2a$10$YourHashedPasswordHere',  -- Use bcrypt to hash your password
-  'Admin',
-  'User',
-  'admin'
-);
+**Option 1: Using MongoDB shell**
+```javascript
+use your_queen_db
+db.users.insertOne({
+  email: 'admin@yourqueen.com',
+  password: '$2a$10$YourHashedPasswordHere',  // Use bcrypt to hash your password
+  firstName: 'Admin',
+  lastName: 'User',
+  role: 'admin',
+  createdAt: new Date()
+})
 ```
 
 **Option 2: Using the API**
 1. Register a regular user through the frontend
-2. Update the user role in the database:
-```sql
-UPDATE users SET role = 'admin' WHERE email = 'your_email@example.com';
+2. Update the user role in MongoDB:
+```javascript
+use your_queen_db
+db.users.updateOne(
+  { email: 'your_email@example.com' },
+  { $set: { role: 'admin' } }
+)
 ```
 
 ### Step 6: Test the Application
@@ -147,9 +147,9 @@ UPDATE users SET role = 'admin' WHERE email = 'your_email@example.com';
 ## Troubleshooting
 
 ### Database Connection Issues
-- Verify PostgreSQL is running
-- Check database credentials in `.env`
-- Ensure the database exists
+- Verify MongoDB is running
+- Check database URI in `.env`
+- Ensure MongoDB is accessible on the specified port
 
 ### Port Already in Use
 - Backend: Change `PORT` in `backend/.env`

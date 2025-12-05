@@ -51,6 +51,19 @@ app.get('/api/health', (req, res) => {
   res.json({ status: 'OK', message: 'Your Queen API is running' });
 });
 
+// Serve static frontend in production
+if (process.env.NODE_ENV === 'production') {
+  const frontendBuildPath = path.join(__dirname, 'public');
+  
+  // Serve static files from the React app
+  app.use(express.static(frontendBuildPath));
+  
+  // Handle React routing, return all requests to React app
+  app.get('*', (req, res) => {
+    res.sendFile(path.join(frontendBuildPath, 'index.html'));
+  });
+}
+
 // Error handling middleware
 app.use((err, req, res, next) => {
   console.error(err.stack);

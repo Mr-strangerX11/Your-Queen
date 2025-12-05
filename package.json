@@ -7,11 +7,30 @@
     "dev": "concurrently \"npm run server\" \"npm run client\"",
     "server": "cd backend && npm run dev",
     "client": "cd frontend && npm start",
-    "install-all": "npm install && cd backend && npm install && cd ../frontend && npm install"
+    "install-all": "npm install && cd backend && npm install && cd ../frontend && npm install",
+    "build": "cd frontend && npm run build",
+    "start": "cd backend && npm start"
   },
-  "keywords": ["jewelry", "ecommerce", "react", "nodejs"],
-  "author": "",
-  "license": "ISC",
+  "keywords": [
+    "jewelry",
+    "ecommerce",
+    "react",
+    "nodejs",
+    "mongodb",
+    "express",
+    "online-store",
+    "shopping-cart"
+  ],
+  "author": "Your Queen Team",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Mr-strangerX11/Your-Queen.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Mr-strangerX11/Your-Queen/issues"
+  },
+  "homepage": "https://github.com/Mr-strangerX11/Your-Queen#readme",
   "devDependencies": {
     "concurrently": "^8.2.2"
   }
