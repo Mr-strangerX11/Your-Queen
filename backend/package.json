@@ -7,6 +7,20 @@
     "start": "node server.js",
     "dev": "nodemon server.js"
   },
+  "keywords": [
+    "jewelry",
+    "ecommerce",
+    "api",
+    "express",
+    "mongodb"
+  ],
+  "author": "Your Queen Team",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Mr-strangerX11/Your-Queen.git",
+    "directory": "backend"
+  },
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
