@@ -56,6 +56,8 @@ if (process.env.NODE_ENV === 'production') {
   const frontendBuildPath = path.join(__dirname, 'public');
   
   // Serve static files from the React app
+  // Note: Static file serving is intentionally not rate-limited
+  // Rate limiting is applied to API routes above
   app.use(express.static(frontendBuildPath));
   
   // Handle React routing, return all requests to React app
