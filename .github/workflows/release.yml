@@ -43,15 +43,9 @@ jobs:
             .
 
       - name: Create Release
-        id: create_release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        uses: softprops/action-gh-release@v1
         with:
-          tag_name: ${{ github.ref }}
-          release_name: Release ${{ github.ref }}
-          draft: false
-          prerelease: false
+          files: your-queen-release.tar.gz
           body: |
             ## What's Changed
             
@@ -62,16 +56,8 @@ jobs:
             1. Download and extract `your-queen-release.tar.gz`
             2. Follow instructions in [QUICKSTART.md](QUICKSTART.md)
             3. For deployment, see [DEPLOYMENT.md](DEPLOYMENT.md)
-
-      - name: Upload Release Asset
-        uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./your-queen-release.tar.gz
-          asset_name: your-queen-release.tar.gz
-          asset_content_type: application/gzip
 
   docker:
     runs-on: ubuntu-latest
